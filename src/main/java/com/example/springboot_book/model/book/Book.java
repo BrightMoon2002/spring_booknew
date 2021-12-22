@@ -2,12 +2,14 @@ package com.example.springboot_book.model.book;
 
 import com.example.springboot_book.model.card.Card;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "books")
+@Data
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

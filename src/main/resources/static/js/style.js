@@ -21,15 +21,17 @@ function createBooks() {
     });
     event.preventDefault();
 }
+
 function successCreate() {
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/books/",
         success: function (data) {
-            let content2 = '<input type="text" id="nameBook" placeholder="NameOfBook">\n' +
-                ' <input type="text" id="authorBook" placeholder="AuthorOfBook">\n' +
-                ' <input type="text" id="quantityBook" placeholder="QuantityOfBook">\n' +
-                '<input type="submit" onClick="createBooks()" value="Create">\n';
+            let content2 = '';
+            // let content2 = '<input type="text" id="nameBook" placeholder="NameOfBook">\n' +
+            //     ' <input type="text" id="authorBook" placeholder="AuthorOfBook">\n' +
+            //     ' <input type="text" id="quantityBook" placeholder="QuantityOfBook">\n' +
+            //     '<input type="submit" onClick="createBooks()" value="Create">\n';
 
             let content = '<tr>\n' +
                 ' <th>Name:</th>\n' +
@@ -41,10 +43,9 @@ function successCreate() {
                 content += getBook(data[i]);
             }
             document.getElementById('books').innerHTML = content;
-            document.getElementById('createBook').innerHTML = content2;
+            document.getElementById('editBook').innerHTML = content2;
         }
     });
-
     function getBook(book) {
         return `<tr><td>${book.name}</td>` +
             `<td>${book.author}</td>` +
@@ -67,19 +68,51 @@ function showBorrowBooks(id) {
                 '<table>\n' +
                 '<caption>BorrowBook</caption>\n' +
                 '<tr>\n' +
-                '<td><input type="hidden" id="idCard" value="' + data.id + '"></td>\n' +
-                '<td><input type="hidden" id="idBook" value="' + data.book.id + '"></td>\n' +
-                '<td><input disabled type="text" id="nameBook" value="' + data.book.name + '"></td>\n' +
+                '<td><input type="hidden" className="form-control" id="idCard" value="' + data.id + '"></td>\n' +
+                '<td><input type="hidden" className="form-control" id="idBook" value="' + data.book.id + '"></td>\n' +
+                '<td><input disabled type="text" className="form-control" id="nameBook" value="' + data.book.name + '"></td>\n' +
                 '</tr>\n' +
                 '<tr>\n' +
-                '<td><input disabled type="text" id="authorBook" value="' + data.book.author + '"></td>\n' +
-                '<td><input type="text" id="idStudent"></td>\n' +
-                '<td><input type="hidden" id="codeCard" value="' + data.code + '"></td>\n' +
+                '<td><input disabled className="form-control" type="text" id="authorBook" value="' + data.book.author + '"></td>\n' +
+                '<td><input className="form-control" type="text" id="idStudent"></td>\n' +
+                '<td><input className="form-control" type="hidden" id="codeCard" value="' + data.code + '"></td>\n' +
                 '</tr>\n' +
                 '</table>\n' +
                 '<button type="submit" value="borrow" onclick="borrowBook()">Borrow</button>\n' +
                 '</form>';
-            document.getElementById('createBook').innerHTML = content;
+
+
+                // '<div className="mb-3">\n' +
+                // '<label className="form-label"></label>\n' +
+                // '<<input type="hidden" className="form-control" id="idCard" value="' + data.id + '"></td>\n' +
+                // ' </div>\n' +
+                // '<div className="mb-3">\n' +
+                // '<label className="form-label"></label>\n' +
+                // '<input type="hidden" className="form-control" id="idBook" value="' + data.book.id + '"></td>\n' +
+                // '</div>\n' +
+                // '<div className="mb-3">\n' +
+                // '<label className="form-label">Name of Book</label>\n' +
+                // '<input disabled type="text" className="form-control" id="nameBook" value="' + data.book.name + '"></td>\n' +
+                // '</div>\n' +
+                // '<div className="mb-3">\n' +
+                // '<label className="form-label">Author</label>\n' +
+                // '<input disabled className="form-control" type="text" id="authorBook" value="' + data.book.author + '"></td>\n' +
+                // '</div>\n' +
+                // '<div className="mb-3">\n' +
+                // '<label className="form-label">Id Student</label>\n' +
+                // '<input className="form-control" type="text" id="idStudent"></td>' +
+                // '</div>\n' +
+                // '<div className="mb-3">\n' +
+                // '<label className="form-label"></label>\n' +
+                // '<td><input className="form-control" type="hidden" id="codeCard" value="' + data.code + '"></td>\n' +
+                // '</div>\n' +
+                // '<div className="modal-footer">\n' +
+                // ' <button type="submit" className="btn btn-secondary" onclick="borrowBook()">Borrow</button>\n' +
+                // '</div>';
+
+
+
+            document.getElementById('editBook').innerHTML = content;
 
         }
     });
@@ -116,31 +149,32 @@ function borrowBook() {
     });
     event.preventDefault();
 }
+
 function errorCreate() {
     window.location = "http://localhost:8080/cards/error"
 }
 
-    function createStudent() {
+function createStudent() {
     let nameStudent = $('#nameStudent').val();
     let identityStudent = $('#identityStudent').val();
     let newStudent = {
-    name: nameStudent,
-    identity: identityStudent
-};
+        name: nameStudent,
+        identity: identityStudent
+    };
     $.ajax({
-    headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-},
-    type: "POST",
-    data: JSON.stringify(newStudent),
-    url: "http://localhost:8080/students",
-    success: successCreateStudent
-});
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: "POST",
+        data: JSON.stringify(newStudent),
+        url: "http://localhost:8080/students",
+        success: successCreateStudent
+    });
     event.preventDefault()
 }
 
-    function successCreateStudent() {
+function successCreateStudent() {
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/students/",
@@ -159,23 +193,23 @@ function errorCreate() {
     });
 }
 
-    function getStudent(student) {
+function getStudent(student) {
     return `<tr><td>${student.name}</td><td>${student.identity}</td>` +
-    `<td><button type="submit" class="delete" value="${student.id}" onclick="deleteStudent(this)">Delete</button></td>` +
-    `<td><button type="submit" class="edit" value="${student.id}" onclick="editStudent(this)">Edit</button></td>` +
-    `</tr>`;
+        `<td><button type="submit" class="delete" value="${student.id}" onclick="deleteStudent(this)">Delete</button></td>` +
+        `<td><button type="submit" class="edit" value="${student.id}" onclick="editStudent(this)">Edit</button></td>` +
+        `</tr>`;
 }
 
-    function deleteStudent(id) {
+function deleteStudent(id) {
     let idStudent = id.getAttribute("value");
     $.ajax({
-    type: "DELETE",
-    url: "http://localhost:8080/students/" +idStudent,
-    success: successCreateStudent
-});
+        type: "DELETE",
+        url: "http://localhost:8080/students/" + idStudent,
+        success: successCreateStudent
+    });
     event.preventDefault();
 }
 
-    function showEditStudent(id) {
+function showEditStudent(id) {
     let idStudent = id.getAttribute("value");
 }

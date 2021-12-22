@@ -1,6 +1,7 @@
 package com.example.springboot_book.controller.book;
 
 import com.example.springboot_book.model.book.Book;
+import com.example.springboot_book.model.card.Card;
 import com.example.springboot_book.service.book.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,17 +20,21 @@ public class BookController {
     @Autowired
     private IBookService bookService;
 
-    @GetMapping("")
-    private ModelAndView showAll(){
-        ModelAndView model = new ModelAndView("/book/list");
-        Iterable<Book> books = bookService.findAll();
-        model.addObject("bookList", books);
-        if (books != null) {
-           model.addObject("message", "");
-        } else {
-            model.addObject("message", "No book on the list");
-        }
-        return model;
+//    @GetMapping("")
+//    private ModelAndView showAll(){
+//        ModelAndView model = new ModelAndView("/book/list");
+//        Iterable<Book> books = bookService.findAll();
+//        model.addObject("bookList", books);
+//        if (books != null) {
+//           model.addObject("message", "");
+//        } else {
+//            model.addObject("message", "No book on the list");
+//        }
+//        return model;
+//    }
+    @GetMapping
+    public ResponseEntity<Iterable<Book>> showAll() {
+        return new ResponseEntity<>(bookService.findAll(), HttpStatus.OK);
     }
     @GetMapping("/")
     public ResponseEntity<Iterable<Book>> getAll() {
